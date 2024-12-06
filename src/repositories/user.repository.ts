@@ -24,15 +24,11 @@ export const createArtistUser = async (artistData: IArtistUser) => {
     return artistUser;
 };
 
-export const loginUserWithEmail = async (email: string, password: string) => {
-    const user = await auth.getUserByEmail(email);
-    if (!user) {
-        throw new Error('User does not exist');
-    }
-    const token = await auth.createCustomToken(user.uid);
-    return { token, uid: user.uid };
+export const getArtistDetailsByEmail = async (email: string) => {
+    // Replace this with your actual database query
+    const artist = await ArtistUser.findOne({ email }); // Use your artist model
+    return artist;
 };
-
 export const saveRefreshToken = async (userId: string, refreshToken: string) => {
     const token = new RefreshToken({ userId, token: refreshToken });
     await token.save();
@@ -59,3 +55,7 @@ export const generateNewToken = async (refreshToken: string) => {
 export const deleteRefreshToken = async (refreshToken: string) => {
     await RefreshToken.deleteOne({ token: refreshToken });
 }; 
+export const fetchAllArtists = async () => {
+    const artists = await ArtistUser.find(); // Retrieve all artist users
+    return artists;
+};

@@ -15,23 +15,31 @@ export const createOrders = async (req: Request, res: Response) => {
 // New updateOrder function
 export const updateOrders = async (req: Request, res: any) => {
   try {
-    const { transactionId } = req.params;
-    const updateData = req.body;
+    const { transactionId } = req.params; // Fetch transaction ID from URL
+    const updateData = req.body; // Fetch update data from request body
+
+    // Validate if the artistAssigned is boolean when provided
+    if (updateData.artistAssigned !== undefined && typeof updateData.artistAssigned !== 'boolean') {
+      return res.status(400).json({ message: 'Invalid value for artistAssigned' });
+    }
+
     const updatedOrder = await orderRepository.updateOrder(transactionId, updateData);
+
     if (!updatedOrder) {
       return res.status(404).json({ message: 'Order not found' });
     }
+
     res.status(200).json(updatedOrder);
   } catch (error) {
     res.status(500).json({ message: 'Failed to update order', error });
   }
 };
-export const getOrdersByUserId = async (req: Request, res: any) => {
+
+export const findOrdersByArtistId = async (req: Request, res: any) => {
   try {
-    const { userId } = req.query; // Get userId from route parameters
-    console.log("userId",userId)
-    const orders = await orderRepository.findOrdersByUserId(userId); // Call repository function
-console.log("orders",orders)
+    const { artistId } = req.query; // Get userId from route parameters
+    const orders = await orderRepository.findOrdersByArtistId(artistId); // Call repository function
+    console.log("orders", orders)
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this user.' });
     }
@@ -39,5 +47,18 @@ console.log("orders",orders)
     return res.status(200).json(orders);
   } catch (error) {
     return res.status(500).json({ message: 'Failed to retrieve orders', error });
+  }
+};
+
+export const getAllOrders = async (req: Request, res: any) => {
+  try {
+    const orders = await orderRepository.getAllOrders();
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found' });
+    }
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    return res.status(500).json({ message: 'Failed to retrieve all orders', error });
   }
 };

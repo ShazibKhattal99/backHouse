@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IArtistUser extends Document {
     email: string;
+    password: string,
     name: string;
     phoneNumber: string;
     houseNo: string;
@@ -11,19 +12,22 @@ export interface IArtistUser extends Document {
     skills: string[];
     pancard: string;
     userId:string;
+    city:String;
 }
 
 const artistUserSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     name: { type: String, required: true },
     phoneNumber: { type: String, required: true },
     houseNo: { type: String, required: true },
     buildingHouseName: { type: String, required: true },
     street: { type: String, required: true },
     pincode: { type: String, required: true },
-    skills: { type: [String], required: true }, // Array of skills
+    skills: { type: [], required: true }, // Array of skills
     pancard: { type: String, required: true },
-    userId: { type: String, required: true }
+    userId: { type: String, required: true },
+    city:{ type: String, required: true }
 });
 
 const ArtistUser = mongoose.model<IArtistUser>('ArtistUser', artistUserSchema);

@@ -22,7 +22,8 @@ export interface OrderDocument extends Document {
   orderPlacedDate: string;
   orderPlacedTime: string;
   userId: string;
-  artistId: string;
+  artistId?: string; // Optional field marked with `?`
+  artistAssigned: boolean; // New field added
   totalAmount: number;
   orderStatus: string;
   paymentStatus: string;
@@ -32,7 +33,6 @@ const CartItemSchema = new Schema<CartItem>({
   serviceId: { type: String, required: true },
   quantity: { type: Number, required: true },
   title: { type: String, required: true },
-  image: { type: String, required: true },
   price: { type: Number, required: true },
   totalPrice: { type: Number, required: true },
 });
@@ -46,11 +46,12 @@ const OrderSchema = new Schema<OrderDocument>({
   time: { type: String, required: true },
   longitude: { type: Number, required: true },
   latitude: { type: Number, required: true },
-  cartItems: [CartItemSchema],
+  cartItems: { type: [CartItemSchema], required: true },
   orderPlacedDate: { type: String, required: true },
   orderPlacedTime: { type: String, required: true },
   userId: { type: String, required: true },
-  artistId:{ type: String, required: false },
+  artistId: { type: String, required: false },
+  artistAssigned: { type: Boolean, required: true, default: false }, // New field with default value
   totalAmount: { type: Number, required: true },
   orderStatus: { type: String, required: true },
   paymentStatus: { type: String, required: true },
