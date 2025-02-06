@@ -1,13 +1,13 @@
 import { Router } from 'express';
 
-import firebaseAuthRouter from './firebaseAuth';
+import artistUserRouter from './artistUser';
+import adminUserRouter from './adminUser'
 import OrderRouter from './orders'
-import adminRouter from './admin'
 
 const router = Router();
 
-router.use('/admin', adminRouter);
-router.use('/auth', firebaseAuthRouter);
+router.use('/adminUser', adminUserRouter);
+router.use('/artistUser', artistUserRouter);
 router.use('/order',OrderRouter)
 
 export default router;

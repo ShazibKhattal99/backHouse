@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createAdmin, findAdminByUsername, findAdminById, addClaimsToAdmin, lockSystem } from '../repositories/admin';
+import { createAdmin, findAdminByUsername, findAdminById, addClaimsToAdmin, lockSystem, unlockSystem } from '../repositories/admin';
 
 const ADMIN_LEVELS = ['Grandmaster', 'Overseer', 'Commander'];
 
@@ -49,6 +49,25 @@ export const lockSystemByAdmin = async (req: Request, res: any) => {
     await lockSystem();
     res.status(200).json({ message: 'System locked by Grandmaster' });
   } catch (error:any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const unlockSystemByAdmin = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { adminId } = req.body;
+    const admin = await findAdminById(adminId);
+    if (!admin) {
+      res.status(404).json({ error: 'Admin not found' });
+      return;
+    }
+    if (admin.level !== 'Grandmaster') {
+      res.status(403).json({ error: 'Only Grandmaster can unlock the system' });
+      return;
+    }
+
+    await unlockSystem();
+    res.status(200).json({ message: 'System unlocked by Grandmaster' });
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };

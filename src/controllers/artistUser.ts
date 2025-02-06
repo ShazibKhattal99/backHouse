@@ -3,10 +3,7 @@ import { IArtistUser } from '../models/artistUser';
 import {
     createUser,
     getArtistDetailsByEmail,
-    saveRefreshToken,
-    verifyRefreshToken,
-    generateNewToken,
-    generateRefreshToken, 
+    saveRefreshToken,   
     createArtistUser,fetchAllArtists
 } from '../repositories/user.repository';
 
@@ -44,21 +41,15 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
     try {
-        // Fetch artist details by email
         const artistDetails = await getArtistDetailsByEmail(email);
         if (!artistDetails) {
             throw new Error('User does not exist');
         }
-
-        // Validate the password
         if (artistDetails.password !== password) {
             console.log("artistDetails.password",artistDetails.password)
             throw new Error('Invalid email or password');
         }
-
-        // Respond with the artist details
         res.status(200).json({
             message: 'Login successful',
             user: artistDetails, // Return all artist details
@@ -70,16 +61,6 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 };
 
-export const refreshToken = async (req: Request, res: Response) => {
-    const { refreshToken } = req.body;
-    try {
-        const userId = await verifyRefreshToken(refreshToken);
-        const newToken = await generateNewToken(refreshToken);
-        res.status(200).json({ token: newToken });
-    } catch (error: any) {
-        res.status(401).json({ message: 'Invalid refresh token' });
-    }
-};
 export const getAllArtists = async (req: Request, res: Response) => {
     try {
         const artists = await fetchAllArtists(); // Fetch all artists

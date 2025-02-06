@@ -1,4 +1,4 @@
-import Admin, { AdminDocument } from '../models/admin';
+import Admin, { AdminDocument } from '../models/adminUser';
 
 export const createAdmin = async (adminData: Partial<AdminDocument>): Promise<AdminDocument> => {
   const admin = new Admin(adminData);
@@ -22,4 +22,8 @@ export const addClaimsToAdmin = async (adminId: string, claims: string[]): Promi
 
 export const lockSystem = async (): Promise<void> => {
   await Admin.updateMany({}, { isLocked: true });
+};
+
+export const unlockSystem = async (): Promise<void> => {
+  await Admin.updateMany({}, { isLocked: false });
 };

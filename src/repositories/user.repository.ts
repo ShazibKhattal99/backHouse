@@ -25,10 +25,10 @@ export const createArtistUser = async (artistData: IArtistUser) => {
 };
 
 export const getArtistDetailsByEmail = async (email: string) => {
-    // Replace this with your actual database query
-    const artist = await ArtistUser.findOne({ email }); // Use your artist model
+    const artist = await ArtistUser.findOne({ email }); 
     return artist;
 };
+
 export const saveRefreshToken = async (userId: string, refreshToken: string) => {
     const token = new RefreshToken({ userId, token: refreshToken });
     await token.save();
@@ -56,6 +56,6 @@ export const deleteRefreshToken = async (refreshToken: string) => {
     await RefreshToken.deleteOne({ token: refreshToken });
 }; 
 export const fetchAllArtists = async () => {
-    const artists = await ArtistUser.find(); // Retrieve all artist users
+    const artists = await ArtistUser.find();
     return artists;
 };
