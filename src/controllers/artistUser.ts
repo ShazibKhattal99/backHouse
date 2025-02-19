@@ -5,7 +5,7 @@ import {
     getArtistDetailsByEmail,
     saveRefreshToken,   
     createArtistUser,fetchAllArtists
-} from '../repositories/user.repository';
+} from '../repositories/artistUser';
 
 export const registerUser = async (req: Request, res: Response) => {
     const { email, password, artistDetails ,skills} = req.body; 

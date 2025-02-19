@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createAdmin, findAdminByUsername, findAdminById, addClaimsToAdmin, lockSystem, unlockSystem } from '../repositories/admin';
+import { createAdmin, findAdminByUsername, findAdminById, addClaimsToAdmin, lockSystem, unlockSystem } from '../repositories/adminUser';
 
 const ADMIN_LEVELS = ['Grandmaster', 'Overseer', 'Commander'];
 

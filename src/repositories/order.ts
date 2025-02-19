@@ -20,13 +20,22 @@ export const updateOrder = async (transactionId: string, updateData: Partial<Ord
 
 export const findOrdersByArtistId = async (artistId: any) => {
   try {
-    // Query the database for orders associated with the given userId
     const orders = await Order.find({ artistId }).exec();
-    return orders; // Return the found orders
+    return orders;
   } catch (error) {
     throw new Error('Error retrieving orders: ' + error);
   }
 };
+
+export const findOrdersByCustomerId = async(phoneNumber:any)=>{
+  try{
+    const orders = await Order.find({ phoneNumber }).exec();
+  }
+  catch(error){
+    
+    throw new Error('Error retrieving orders: ' + error);
+  }
+}
 
 export const getAllOrders = async () => {
   try {
