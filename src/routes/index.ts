@@ -8,7 +8,7 @@ import { verifyAccessToken } from '../middlewares/authenticateToken';
 const router = Router();
 
 router.use('/adminUser', adminUserRouter);
-router.use('/artistUser',verifyAccessToken, artistUserRouter);
+router.use('/artistUser', artistUserRouter);
 router.use('/customertUser',verifyAccessToken,customerUserRouter);
 router.use('/order',verifyAccessToken,OrderRouter)
 
