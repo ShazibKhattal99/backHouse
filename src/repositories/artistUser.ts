@@ -17,5 +17,6 @@ export const fetchAllArtists = async () => {
 
 export const fetchArtistByPhoneNumber = async (phoneNumber: string) => {
         const artist = await ArtistUser.findOne({ phoneNumber }).exec();
+        console.log(artist)
         return artist;
 };

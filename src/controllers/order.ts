@@ -35,13 +35,32 @@ export const updateOrders = async (req: Request, res: any) => {
   }
 };
 
-export const findOrdersByArtistId = async (req: Request, res: any) => {
+export const findOrdersById = async (req: any, res: any): Promise<void> => {
   try {
-    const { artistId } = req.query; // Get userId from route parameters
-    const orders = await orderRepository.findOrdersByArtistId(artistId); // Call repository function
-    console.log("orders", orders)
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({ message: 'No orders found for this user.' });
+    const { phoneNumber, artistId } = req.query;
+
+    // Ensure at least one of phoneNumber or artistId is provided
+    if (!phoneNumber && !artistId) {
+      return res.status(400).json({ message: 'Either phoneNumber or artistId is required.' });
+    }
+
+    let orders :any= [];
+
+    if (phoneNumber) {
+      const phoneStr = phoneNumber as string;
+
+      // Validate phone number format (91XXXXXXXXXX, 12 digits)
+      if (!/^\d{12}$/.test(phoneStr) || !phoneStr.startsWith('91')) {
+        return res.status(400).json({ message: 'Invalid phone number. It must start with 91 and be 12 digits long.' });
+      }
+
+      orders = await orderRepository.findOrdersByPhoneNumber(phoneStr);
+    } else if (artistId) {
+      orders = await orderRepository.findOrdersByArtistId(artistId as string);
+    }
+
+    if (!orders.length) {
+      return res.status(404).json({ message: 'No orders found.' });
     }
 
     return res.status(200).json(orders);

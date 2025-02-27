@@ -9,7 +9,7 @@ const router = Router();
 
 router.use('/adminUser', adminUserRouter);
 router.use('/artistUser', artistUserRouter);
-router.use('/customertUser',verifyAccessToken,customerUserRouter);
+router.use('/customertUser',customerUserRouter);
 router.use('/order',verifyAccessToken,OrderRouter)
 
 export default router;

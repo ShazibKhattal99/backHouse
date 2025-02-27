@@ -26,13 +26,21 @@ export const findOrdersByArtistId = async (artistId: any) => {
     throw new Error('Error retrieving orders: ' + error);
   }
 };
+export const findOrdersByPhoneNumber = async (phoneNumber: string) => {
+  try {
+    const orders = await Order.find({ phoneNumber }).exec();
+    return orders;
+  } catch (error) {
+    throw new Error('Error retrieving orders: ' + error);
+  }
+};
 
-export const findOrdersByCustomerId = async(phoneNumber:any)=>{
-  try{
+export const findOrdersByCustomerId = async (phoneNumber: any) => {
+  try {
     const orders = await Order.find({ phoneNumber }).exec();
   }
-  catch(error){
-    
+  catch (error) {
+
     throw new Error('Error retrieving orders: ' + error);
   }
 }
