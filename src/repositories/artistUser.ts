@@ -14,9 +14,11 @@ export const fetchAllArtists = async () => {
     const artists = await ArtistUser.find();
     return artists;
 };
-
+export const findArtistByMobile = async (phoneNumber: string): Promise<boolean> => {
+  const artist = await ArtistUser.findOne({ phoneNumber });
+  return !!artist;
+};
 export const fetchArtistByPhoneNumber = async (phoneNumber: string) => {
         const artist = await ArtistUser.findOne({ phoneNumber }).exec();
-        console.log(artist)
         return artist;
 };

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { IArtistUser } from '../models/artistUser';
 import {
     createArtistUser, fetchAllArtists,
-    fetchArtistByPhoneNumber
+    fetchArtistByPhoneNumber, findArtistByMobile
 } from '../repositories/artistUser';
 
 export const registerUser = async (req: Request, res: Response) => {
@@ -63,17 +63,33 @@ export const getAllArtists = async (req: Request, res: Response) => {
 
 export const getArtistByPhoneNumber = async (req: any, res: any) => {
     try {
-        const { phoneNumber } = req.body;
+        const { phoneNumber } = req.query; // Extract from query params
         if (!phoneNumber) {
             return res.status(400).json({ message: 'Phone number is required' });
         }
         const artist = await fetchArtistByPhoneNumber(phoneNumber as string); // Fetch artist by phone number
         if (!artist) {
-            return res.status(404).json({ message: 'Artist not found' });
+            return res.status(404).json({ message: 'Artist not found', success: false });
         }
-
-        res.status(200).json({ message: 'Artist fetched successfully', artist });
+        res.status(200).json({ message: 'Artist fetched successfully', success: true, artist });
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const artistExist = async (req: any, res: any) => {
+    try {
+        const { phoneNumber } = req.query;
+        if (!phoneNumber) {
+            return res.status(400).json({ message: 'Phone number is required' });
+        }
+        console.log(phoneNumber)
+        const artist = await findArtistByMobile(phoneNumber as string); // Fetch artist by phone number
+        if (!artist) {
+            return res.status(200).json({ message: 'Artist not found', success: false });
+        }
+        res.status(200).json({ message: 'Artist fetched successfully', success: true });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+}
